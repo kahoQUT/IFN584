@@ -9,7 +9,7 @@ public class Menu
     {
         string input;
 
-        WriteLine("Let's play Numerical Tic-Tac-Toe!");
+        WriteLine("Let's play Two-Player Board Game!");
         WriteLine("1 - Start A New Game");
         WriteLine("2 - Load Game");
         WriteLine("3 - Exit");

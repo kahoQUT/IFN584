@@ -2,48 +2,7 @@ using System;
 using static System.Console;
 namespace a1;
 
-public abstract class Board
-{
-    public int Size { get; protected set; }
-
-    // 2D board grid (you can replace with game-specific representation)
-    protected int[,] Grid;
-
-    protected Board(int size)
-    {
-        Size = size;
-        Grid = new int[size, size];
-    }
-
-    // Return a list of empty cell coordinates
-    public virtual List<(int, int)> GetEmptyCells()
-    {
-        List<(int, int)> emptyCells = new();
-
-        for (int i = 0; i < Size; i++)
-        {
-            for (int j = 0; j < Size; j++)
-            {
-                if (Grid[i, j] == 0) // assuming 0 means empty
-                {
-                    emptyCells.Add((i, j));
-                }
-            }
-        }
-
-        return emptyCells;
-    }
-
-    public abstract void Display();
-
-    public abstract bool IsCellEmpty(int row, int col);
-
-    public abstract void PlaceMove(int row, int col, Player player, int? value = null);
-
-    public abstract bool CheckWin(Player player);
-}
-
-public class NumericalBoard :Board
+public class Board
 {
     public int Size{ get; }
     public int[,] Grid { get; set; }
@@ -66,7 +25,7 @@ public class NumericalBoard :Board
     }
 
     //Visualise the board
-    public override void Display()
+    public void Display()
     {
         WriteLine();
         Write("    ");
@@ -88,13 +47,13 @@ public class NumericalBoard :Board
         WriteLine();
     }
 
-    public override bool IsCellEmpty(int row, int col)
+    public bool IsCellEmpty(int row, int col)
     {
         return Grid[row, col] == 0;
     }
 
     //Place a number in cell
-    public override void PlaceMove(int row, int col, Player player, int? number = null)
+    public bool PlaceNumber(int row, int col, int number)
     {
         if (IsCellEmpty(row, col))
         {
@@ -128,7 +87,7 @@ public class NumericalBoard :Board
     }
 
     //Check the rows, cols, diagonal
-    public override bool CheckWin(Player player)
+    public bool CheckWin()
     {
         // Check rows
         for (int i = 0; i < Size; i++)
@@ -209,100 +168,4 @@ public class NumericalBoard :Board
         return false;
     }
 
-}
-public class GomokuBoard : Board
-{
-    private const int WinCount = 5;
-
-    public GomokuBoard(int size = 15) : base(size)
-    {
-    }
-
-    public override void Display()
-    {
-        Console.WriteLine();
-        Console.Write("   ");
-        for (int col = 0; col < Size; col++)
-            Console.Write($"{col + 1,3}");
-        Console.WriteLine();
-
-        for (int row = 0; row < Size; row++)
-        {
-            Console.Write($"{row + 1,3}");
-            for (int col = 0; col < Size; col++)
-            {
-                string cell = Grid[row, col] switch
-                {
-                    0 => " . ",
-                    1 => " X ",
-                    2 => " O ",
-                    _ => " ? "
-                };
-                Console.Write(cell);
-            }
-            Console.WriteLine();
-        }
-        Console.WriteLine();
-    }
-
-    public override bool IsCellEmpty(int row, int col)
-    {
-        return Grid[row, col] == 0;
-    }
-
-    public override void PlaceMove(int row, int col, Player player, int? value = null)
-    {
-        if (!IsCellEmpty(row, col))
-        {
-            Console.WriteLine("Cell already occupied.");
-            return;
-        }
-
-        int piece = player.Name == "Player 1" ? 1 : 2;
-        Grid[row, col] = piece;
-    }
-
-    public override bool CheckWin(Player player)
-    {
-        int piece = player.Name == "Player 1" ? 1 : 2;
-
-        for (int i = 0; i < Size; i++)
-        {
-            for (int j = 0; j < Size; j++)
-            {
-                if (Grid[i, j] != piece) continue;
-
-                // Check 4 directions: →, ↓, ↘, ↙
-                if (CheckDirection(i, j, 0, 1, piece) ||  // Horizontal
-                    CheckDirection(i, j, 1, 0, piece) ||  // Vertical
-                    CheckDirection(i, j, 1, 1, piece) ||  // Diagonal ↘
-                    CheckDirection(i, j, 1, -1, piece))   // Diagonal ↙
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private bool CheckDirection(int row, int col, int deltaRow, int deltaCol, int piece)
-    {
-        int count = 0;
-
-        for (int k = 0; k < WinCount; k++)
-        {
-            int r = row + deltaRow * k;
-            int c = col + deltaCol * k;
-
-            if (r < 0 || r >= Size || c < 0 || c >= Size)
-                return false;
-
-            if (Grid[r, c] == piece)
-                count++;
-            else
-                break;
-        }
-
-        return count == WinCount;
-    }
 }

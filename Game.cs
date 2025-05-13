@@ -4,6 +4,27 @@ using System.Text.Json;
 
 namespace a1;
 
+public abstract class TGame
+{
+    protected Board[] Board;
+    protected Player Player1;
+    protected Player Player2;
+    protected Player[] Players;
+    //Template method outling the steps
+    public void Start()
+    {
+        Setup();
+
+        while (!IsGameOver())
+        {
+            Board.Display();
+            PlayTurn();
+            SwitchTurn();
+        }
+
+        EndGame();
+    }
+}
 public class Game
 {
     private Board Board;
@@ -297,10 +318,9 @@ public class Game
     //Help menu
     private void ShowHelp()
     {
-        WriteLine("Commands:");
-        WriteLine("- Enter move: row col number (e.g.>>>1 2 3)");
-        WriteLine("- Save: Save the game");
-        WriteLine("- Help: Show this menu");
+        const string FILENAME = "HelpMenu.txt";
+        string readText = File.ReadAllText(FILENAME);
+        WriteLine(readText);
     }
 
     private int[][] ConvertToJaggedArray(int[,] grid)

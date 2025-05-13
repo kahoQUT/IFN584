@@ -1,0 +1,4 @@
+Commands:
+- Enter move: row col move (e.g.>>>1 2 3)
+- Save: Save the game
+- Help: Show this menu

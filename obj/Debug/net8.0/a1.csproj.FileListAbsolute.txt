@@ -11,6 +11,7 @@
 /Users/kaho/IFN584_a1/obj/Debug/net8.0/a1.AssemblyInfoInputs.cache
 /Users/kaho/IFN584_a1/obj/Debug/net8.0/a1.AssemblyInfo.cs
 /Users/kaho/IFN584_a1/obj/Debug/net8.0/a1.csproj.CoreCompileInputs.cache
+/Users/kaho/IFN584_a1/obj/Debug/net8.0/a1.sourcelink.json
 /Users/kaho/IFN584_a1/obj/Debug/net8.0/a1.dll
 /Users/kaho/IFN584_a1/obj/Debug/net8.0/refint/a1.dll
 /Users/kaho/IFN584_a1/obj/Debug/net8.0/a1.pdb
