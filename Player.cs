@@ -2,38 +2,53 @@ using System;
 
 namespace a1;
 
-public abstract class PlayerFactory
-{
-    public abstract Player CreatePlayer(string name, int pieceId);
-}
-public class HumanPlayerFactory : PlayerFactory
-{
-    public override Player CreatePlayer(string name, int pieceId)
-    {
-        return new HumanPlayer(name) { PieceId = pieceId };
-    }
-}
-public class ComputerPlayerFactory : PlayerFactory
-{
-    public override Player CreatePlayer(string name, int pieceId)
-    {
-        return new ComputerPlayer(name) { PieceId = pieceId };
-    }
-}
 public abstract class Player
 {
-    public string Name { get; protected set; }
-    public bool IsComputer { get; protected set; }
-    public int PieceId { get; set; }
+    public string Name { get; }
+    public char Symbol { get; }
 
-    protected Player(string name, bool isComputer)
+    protected Player(string name, char symbol)
     {
         Name = name;
-        IsComputer = isComputer;
+        Symbol = symbol;
     }
 
-    public abstract (int row, int col, int? value) GetMove(Board board);
+    public abstract void MakeMove(Board board);
 }
+public class HumanPlayer : Player
+{
+    public HumanPlayer(string name, char symbol) : base(name, symbol) { }
+
+    public override void MakeMove(Board board)
+    {
+        Console.WriteLine($"{Name}'s turn ({Symbol}). Enter your move (row and column):");
+        Console.Write("Row: ");
+        int row = int.Parse(Console.ReadLine());
+        Console.Write("Col: ");
+        int col = int.Parse(Console.ReadLine());
+
+        board.PlaceSymbol(row, col, Symbol);
+    }
+}
+
+public class ComputerPlayer : Player
+{
+    private readonly Random _random = new();
+
+    public ComputerPlayer(string name, char symbol) : base(name, symbol) { }
+
+    public override void MakeMove(Board board)
+    {
+        Console.WriteLine($"{Name}'s turn ({Symbol}). Thinking...");
+
+        (int row, int col) = board.GetRandomAvailableMove();
+        board.PlaceSymbol(row, col, Symbol);
+
+        Console.WriteLine($"Computer chose ({row}, {col})");
+    }
+}
+
+
 
 // public class Player
 // {
