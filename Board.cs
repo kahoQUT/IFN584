@@ -2,41 +2,63 @@ using System;
 using static System.Console;
 namespace a1;
 
-public class Board
+public abstract class Board
 {
-    public int Size{ get; }
+    public abstract List<(int, int)> GetEmptyCells();
+
+    public abstract bool PlaceMove(int row, int col, Player player, int? value = null);
+
+    public abstract void Display();
+
+    public abstract bool CheckWin(Player player);
+
+    public abstract bool ResetNumber(int row, int col); // Only for numerical games
+}
+
+public class NumericalBoard: Board
+{
+    public int Size { get; }
     public int[,] Grid { get; set; }
-    public Dictionary<(int, int), int> Moves { get; set; }
     public int WinNum
     {
         get { return Size * (Size * Size + 1) / 2; }
     }
 
     //Constructor for new Board
-    public Board(int size)
+    public NumericalBoard(int size)
     {
         Size = size;
-        Moves = new Dictionary<(int, int), int>();
         Grid = new int[size, size];
     }
 
-    public string AddSpacesAround(string input){
+    public override List<(int, int)> GetEmptyCells()
+    {
+        List<(int, int)> empty = new();
+        for (int i = 0; i < Size; i++)
+            for (int j = 0; j < Size; j++)
+                if (Grid[i, j] == 0)
+                    empty.Add((i, j));
+        return empty;
+    }
+
+    public string AddSpacesAround(string input)
+    {
         return $" {input} ";
     }
 
     //Visualise the board
-    public void Display()
+    public override void Display()
     {
         WriteLine();
         Write("    ");
         for (int i = 0; i < Size; i++)
         {
-            Write($" C{i+1} ");
+            Write($" C{i + 1} ");
         }
         WriteLine();
         for (int i = 0; i < Size; i++)
         {
-            Write($"R{i+1} ");
+            Write($"R{i + 1} ");
             for (int j = 0; j < Size; j++)
             {
                 string cell = Grid[i, j] == 0 ? " . " : AddSpacesAround(Grid[i, j].ToString());
@@ -53,41 +75,41 @@ public class Board
     }
 
     //Place a number in cell
-    public bool PlaceNumber(int row, int col, int number)
+    public override bool PlaceMove(int row, int col, Player player, int? value = null)
     {
-        if (IsCellEmpty(row, col))
-        {
-            Grid[row, col] = number;
-            Moves[(row, col)] = number;
-            return true;
-        }
-        return false;
-    }
-    
-    //Reset 0 in cell
-    public bool ResetNumber(int row, int col)
-    {
-        Grid[row, col] = 0;
-        Moves[(row, col)] = 0;
+        if (!IsCellEmpty(row, col) || value == null) return false;
+        Grid[row, col] = value.Value;
         return true;
     }
 
-    //Check the Board is it full with numbers
-    public bool IsFull()
+    //Reset 0 in cell
+    public override bool ResetNumber(int row, int col)
     {
-        for (int i = 0; i < Size; i++)
-        {
-            for (int j = 0; j < Size; j++)
-            {
-                if (Grid[i, j] == 0)
-                    return false;
-            }
-        }
+        Grid[row, col] = 0;
         return true;
+    }
+
+    // //Check the Board is it full with numbers
+    // public bool IsFull()
+    // {
+    //     for (int i = 0; i < Size; i++)
+    //     {
+    //         for (int j = 0; j < Size; j++)
+    //         {
+    //             if (Grid[i, j] == 0)
+    //                 return false;
+    //         }
+    //     }
+    //     return true;
+    // }
+
+    public int[,] GetGrid()
+    {
+        return Grid;
     }
 
     //Check the rows, cols, diagonal
-    public bool CheckWin()
+    public override bool CheckWin(Player player)
     {
         // Check rows
         for (int i = 0; i < Size; i++)
