@@ -2,4 +2,5 @@
 using static System.Console;
 
 WriteLine("Let's play Two-Player Board Game!");
-Menu.ShowMainMenu();
+Menu menu = new Menu();
+menu.ShowMainMenu();

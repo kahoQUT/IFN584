@@ -8,17 +8,20 @@ public abstract class Game
 {
     protected Board[] Board;
     protected Player[] Players;
+    protected int BoardSize;
     protected int CurrentPlayerIndex;
     public Game(int boardSize, Player player1, Player player2)
     {
         Players = new[] { player1, player2 };
         CurrentPlayerIndex = 0;
+        BoardSize = boardSize;
     }
 
     public Game(int boardSize, Player player1, Player player2, GameState state)
     {
         Players = new[] { player1, player2 };
         CurrentPlayerIndex = state.CurrentPlayerIndex;
+        BoardSize = boardSize;
     }
 
     //Template method outling the steps
@@ -51,17 +54,34 @@ public class NumTicTacToeGame : Game
     public NumTicTacToeGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2) { }
     public NumTicTacToeGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
     protected override void Initialize()
-    { }
+    {
+        Board = new Board[] { new NumericalBoard(BoardSize) };
+    }
     protected override bool endOfGame()
     {
-        return true;
+        if (Board[0].CheckWin(Players[CurrentPlayerIndex]) || Board[0].GetEmptyCells().Count == 0) return true;
+        else return false;
     }
     protected override void MakePlay()
-    {}
+    {
+        Player currentPlayer = Players[CurrentPlayerIndex];
+        currentPlayer.MakeMove(Board[0]);
+    }
     protected override void DisplayBoards()
-    {}
+    {
+        Board[0].Display();
+    }
     protected override void EndGame()
-    {}
+    {
+        if (Board[0].CheckWin(Players[CurrentPlayerIndex]))
+        {
+            WriteLine($"{Players[CurrentPlayerIndex].Name} wins!");
+        }
+        else
+        {
+            WriteLine("It's a tie!");
+        }
+    }
 }
 public class GomokuGame : Game
 {

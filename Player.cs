@@ -7,13 +7,14 @@ public abstract class Player
     public string Name { get; }
     public char? Symbol { get; }
     public List<int> AvailableNumbers { get; set; }
-    public bool IsNumericalGame { get; }
+    public bool IsNumGame { get; }
 
-    public Player(string name, bool isNumericalGame, char? symbol = null)
+    public Player(string name, bool isNumGame, char? symbol = null)
     {
         Name = name;
-        IsNumericalGame = isNumericalGame;
+        IsNumGame = isNumGame;
         Symbol = symbol;
+        AvailableNumbers = new List<int>();
     }
 
     public abstract void MakeMove(Board board);
@@ -39,9 +40,9 @@ public abstract class Player
 }
 public class HumanPlayer : Player
 {
-    public HumanPlayer(string name, bool isNumericalGame, bool isFirstPlayer, int boardSize, char? symbol = null) : base(name, isNumericalGame, symbol)
+    public HumanPlayer(string name, bool isNumGame, bool isFirstPlayer, int boardSize, char? symbol = null) : base(name, isNumGame, symbol)
     {
-        if (isNumericalGame)
+        if (isNumGame)
         {
             int maxNumber = boardSize * boardSize;
             for (int i = 1; i <= maxNumber; i++)
@@ -54,7 +55,7 @@ public class HumanPlayer : Player
 
     public override void MakeMove(Board board)
     {
-        Console.WriteLine($"{Name}'s turn{(IsNumericalGame ? $". Your numbers: {string.Join(", ", AvailableNumbers)}" : $" ({Symbol})")}.");
+        Console.WriteLine($"{Name}'s turn{(IsNumGame ? $". Your numbers: {string.Join(", ", AvailableNumbers)}" : $" ({Symbol})")}.");
         Console.Write("Enter move (row col value): ");
         string[] input = Console.ReadLine()?.Split() ?? Array.Empty<string>();
 
@@ -69,7 +70,7 @@ public class HumanPlayer : Player
 
         row--; col--;
 
-        if (IsNumericalGame)
+        if (IsNumGame)
         {
             if (!HasNumber(value))
             {
@@ -99,9 +100,9 @@ public class ComputerPlayer : Player
 {
     private Random random = new();
 
-    public ComputerPlayer(string name, bool isNumericalGame, int boardSize, char? symbol = null): base(name, isNumericalGame, symbol)
+    public ComputerPlayer(string name, bool isNumGame, int boardSize, char? symbol = null): base(name, isNumGame, symbol)
     {
-        if (isNumericalGame)
+        if (isNumGame)
         {
             int maxNumber = boardSize * boardSize;
             for (int i = 2; i <= maxNumber; i += 2)
@@ -111,11 +112,11 @@ public class ComputerPlayer : Player
 
     public override void MakeMove(Board board)
     {
-        Console.WriteLine($"{Name}'s turn {(IsNumericalGame ? "" : $"({Symbol})")}. Thinking...");
+        Console.WriteLine($"{Name}'s turn {(IsNumGame ? "" : $"({Symbol})")}. Thinking...");
 
         var emptyCells = board.GetEmptyCells();
 
-        if (IsNumericalGame)
+        if (IsNumGame)
         {
             foreach (var (r, c) in emptyCells)
             {

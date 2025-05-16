@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http.Headers;
 using static System.Console;
 
 namespace a1;
@@ -30,7 +31,7 @@ public class Menu
                     break;
                 case "3":
                     WriteLine("See you!");
-                    break;
+                    return;
                 default:
                     WriteLine("Invalid choice. Please Enter again.");
                     break;
