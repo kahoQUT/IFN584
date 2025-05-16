@@ -15,7 +15,7 @@ public abstract class Board
     public abstract bool ResetNumber(int row, int col); // Only for numerical games
 }
 
-public class NumericalBoard: Board
+public class NumericalBoard : Board
 {
     public int Size { get; }
     public int[,] Grid { get; set; }

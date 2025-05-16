@@ -3,25 +3,24 @@ using static System.Console;
 using System.Text.Json;
 
 namespace a1;
-public interface IGameFactory
-{
-    Game CreateGame();
-}
-public class GomokuFactory : IGameFactory
-{
-    public Game CreateGame() => new GomokuGame();
-}
-
-public class TicTacToeFactory : IGameFactory
-{
-    public Game CreateGame() => new TicTacToeGame();
-}
 
 public abstract class Game
 {
     protected Board[] Board;
     protected Player[] Players;
     protected int CurrentPlayerIndex;
+    public Game(int boardSize, Player player1, Player player2)
+    {
+        Players = new[] { player1, player2 };
+        CurrentPlayerIndex = 0;
+    }
+
+    public Game(int boardSize, Player player1, Player player2, GameState state)
+    {
+        Players = new[] { player1, player2 };
+        CurrentPlayerIndex = state.CurrentPlayerIndex;
+    }
+
     //Template method outling the steps
     public void playGame()
     {
@@ -30,7 +29,7 @@ public abstract class Game
         while (!endOfGame())
         {
             DisplayBoards();
-            MakeMove();
+            MakePlay();
             SwitchTurn();
         }
 
@@ -40,22 +39,24 @@ public abstract class Game
     protected abstract void Initialize();
     protected abstract bool endOfGame();
     protected abstract void DisplayBoards();
-    protected abstract void MakeMove();
+    protected abstract void MakePlay();
     protected abstract void EndGame();
     protected void SwitchTurn()
     {
         CurrentPlayerIndex = (CurrentPlayerIndex + 1) % 2;
     }
 }
-public class TicTacToeGame : Game
+public class NumTicTacToeGame : Game
 {
+    public NumTicTacToeGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2) { }
+    public NumTicTacToeGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
     protected override void Initialize()
-    {}
+    { }
     protected override bool endOfGame()
     {
         return true;
     }
-    protected override void MakeMove()
+    protected override void MakePlay()
     {}
     protected override void DisplayBoards()
     {}
@@ -64,13 +65,15 @@ public class TicTacToeGame : Game
 }
 public class GomokuGame : Game
 {
+    public GomokuGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2) { }
+    public GomokuGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
     protected override void Initialize()
-    {}
+    { }
     protected override bool endOfGame()
     {
         return true;
     }
-    protected override void MakeMove()
+    protected override void MakePlay()
     {}
     protected override void DisplayBoards()
     {}

@@ -9,7 +9,7 @@ public abstract class Player
     public List<int> AvailableNumbers { get; set; }
     public bool IsNumericalGame { get; }
 
-    protected Player(string name, bool isNumericalGame, char? symbol = null)
+    public Player(string name, bool isNumericalGame, char? symbol = null)
     {
         Name = name;
         IsNumericalGame = isNumericalGame;
@@ -39,7 +39,7 @@ public abstract class Player
 }
 public class HumanPlayer : Player
 {
-    public HumanPlayer(string name, bool isNumericalGame, bool isFirstPlayer, int boardSize, char? symbol) : base(name, isNumericalGame, symbol)
+    public HumanPlayer(string name, bool isNumericalGame, bool isFirstPlayer, int boardSize, char? symbol = null) : base(name, isNumericalGame, symbol)
     {
         if (isNumericalGame)
         {
