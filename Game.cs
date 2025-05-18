@@ -6,6 +6,7 @@ namespace a1;
 
 public abstract class Game
 {
+    // todo should we go for Board, not array
     protected Board[] Board;
     protected Player[] Players;
     protected int BoardSize;
@@ -38,7 +39,7 @@ public abstract class Game
 
         EndGame();
     }
-    
+
     protected abstract void Initialize();
     protected abstract bool endOfGame();
     protected abstract void DisplayBoards();
@@ -88,17 +89,54 @@ public class GomokuGame : Game
     public GomokuGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2) { }
     public GomokuGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
     protected override void Initialize()
-    { }
+    {
+
+    }
     protected override bool endOfGame()
     {
-        return true;
+        return false;
     }
     protected override void MakePlay()
-    {}
+    {
+        
+    }
     protected override void DisplayBoards()
-    {}
+    {
+        
+    }
     protected override void EndGame()
-    {}
+    {
+        
+    }
+}
+
+public class NotaktoGame : Game
+{
+    public NotaktoGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2) { }
+    public NotaktoGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
+
+    protected override void Initialize()
+    {
+        Console.WriteLine($"Initialize NotaktoGame");
+        Board = new Board[] { new NotaktoBoard() };
+    }
+    protected override bool endOfGame()
+    {
+        return Board[0].CheckWin(Players[CurrentPlayerIndex]);
+    }
+    protected override void MakePlay()
+    {
+        Players[CurrentPlayerIndex].MakeMove(Board[0]);
+    }
+    protected override void DisplayBoards()
+    {
+        Board[0].Display();
+    }
+    protected override void EndGame()
+    {
+        Board[0].Display();
+        Console.WriteLine($"Winner is {Players[CurrentPlayerIndex].Name}");
+    }
 }
 // public class Game
 // {

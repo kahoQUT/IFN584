@@ -53,6 +53,7 @@ public class HumanPlayer : Player
         }
     }
 
+    // todo if invalid move, retry
     public override void MakeMove(Board board)
     {
         Console.WriteLine($"{Name}'s turn{(IsNumGame ? $". Your numbers: {string.Join(", ", AvailableNumbers)}" : $" ({Symbol})")}.");
