@@ -104,7 +104,7 @@ public class Menu
                 case "2":
                     return new Player[]
                     {
-                        new HumanPlayer("You", isNumerical, true, boardSize),
+                        new HumanPlayer("Player", isNumerical, true, boardSize),
                         new ComputerPlayer("Computer", isNumerical, boardSize)
                     };
                 default:
@@ -116,7 +116,7 @@ public class Menu
 
     public int ChooseBoardSize()
     {
-        Write("\nEnter board size (e.g. 3, 4, 5, ..., for n x n) >> ");
+        Write("\nEnter board size (>= 3) >> ");
         while (true)
         {
             string input = ReadLine()?.Trim();
