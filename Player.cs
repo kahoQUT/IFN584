@@ -59,7 +59,7 @@ public class HumanPlayer : Player
         while (true)
         {
             WriteLine($"{Name}'s turn{(IsNumGame ? $". Your numbers: {string.Join(", ", AvailableNumbers)}" : $" ({Symbol})")}.");
-            Write("Enter move (row col value) or help for other commands: ");
+            Write($"Enter move ({(IsNumGame ? "row col number" : "row col")}) or help for other commands: ");
             string[] input = ReadLine()?.Split() ?? Array.Empty<string>();
 
             if (input.Length == 1)
@@ -92,19 +92,17 @@ public class HumanPlayer : Player
                 }
             }
 
-            if (input.Length != 3 ||
+            if (IsNumGame)
+            {
+                 if (input.Length != 3 ||
                 !int.TryParse(input[0], out int row) ||
                 !int.TryParse(input[1], out int col) ||
                 !int.TryParse(input[2], out int value))
-            {
-                WriteLine("Invalid input. Enter move (row col value) or help for other commands: ");
-                continue;
-            }
-
-            row--; col--;
-
-            if (IsNumGame)
-            {
+                {
+                    WriteLine("Invalid input. Enter move (row col value) or help for other commands: ");
+                    continue;
+                }
+                row--; col--;
                 if (!HasNumber(value))
                 {
                     WriteLine("You don't have that number.");
@@ -124,6 +122,14 @@ public class HumanPlayer : Player
             }
             else
             {
+                if (input.Length != 2 ||
+                !int.TryParse(input[0], out int row) ||
+                !int.TryParse(input[1], out int col))
+                {
+                    WriteLine("Invalid input. Format: row col");
+                    continue;
+                }
+                row--; col--;
                 if (!game.GameBoard.PlaceMove(row, col, this))
                 {
                     WriteLine("Invalid move.");

@@ -90,6 +90,9 @@ public class Menu
         WriteLine("1 - Human vs Human");
         WriteLine("2 - Human vs Computer");
 
+        char? symbol1 = isNumerical ? null : 'X';
+        char? symbol2 = isNumerical ? null : 'O';
+
         while (true)
         {
             Write("Enter choice (1–2) >> ");
@@ -99,14 +102,14 @@ public class Menu
                 case "1":
                     return new Player[]
                     {
-                    new HumanPlayer("Player 1", isNumerical, true, boardSize),
-                    new HumanPlayer("Player 2", isNumerical, false, boardSize)
+                        new HumanPlayer("Player 1", isNumerical, true, boardSize, symbol1),
+                        new HumanPlayer("Player 2", isNumerical, false, boardSize, symbol2)
                     };
                 case "2":
                     return new Player[]
                     {
-                        new HumanPlayer("Player", isNumerical, true, boardSize),
-                        new ComputerPlayer("Computer", isNumerical, boardSize)
+                        new HumanPlayer("Player", isNumerical, true, boardSize, symbol1),
+                        new ComputerPlayer("Computer", isNumerical, boardSize, symbol2)
                     };
                 default:
                     WriteLine("Invalid input. Try again.");

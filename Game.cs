@@ -31,6 +31,7 @@ public abstract class Game
     //Template method outling the steps
     public void playGame()
     {
+        Initialize();
         while (!endOfGame())
         {
             DisplayBoards();
@@ -49,6 +50,11 @@ public abstract class Game
     protected abstract void EndGame();
     protected void SaveState()
     {
+        if (Board.Grid == null)
+{
+    Console.WriteLine("[ERROR] Board.Grid is null during SaveState.");
+    return;
+}
         var state = new GameState
         {
             Grid = (int[,])Board.Grid.Clone(),
