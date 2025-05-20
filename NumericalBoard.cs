@@ -5,7 +5,6 @@ namespace a1;
 public class NumericalBoard : Board
 {
     public int Size { get; }
-    public int[,] Grid { get; set; }
     public int WinNum
     {
         get { return Size * (Size * Size + 1) / 2; }

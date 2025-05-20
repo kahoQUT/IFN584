@@ -1,16 +1,16 @@
 using System;
+using static System.Console;
 
 namespace a1;
 
 public class NotaktoGame : Game
 {
     public NotaktoGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2) { }
-    public NotaktoGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
+    // public NotaktoGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
 
-    protected override void Initialize()
+    public override void Initialize()
     {
-        WriteLine($"Initialize NotaktoGame");
-        Board =new NotaktoBoard();
+        Board = new NotaktoBoard();
     }
     protected override bool endOfGame()
     {
@@ -18,9 +18,9 @@ public class NotaktoGame : Game
     }
     protected override void MakePlay()
     {
-        Players[CurrentPlayerIndex].MakeMove(Board);
+        Players[CurrentPlayerIndex].MakeMove(this);
     }
-    protected override void DisplayBoards()
+    public override void DisplayBoards()
     {
         Board.Display();
     }

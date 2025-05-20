@@ -17,7 +17,7 @@ public abstract class Player
         AvailableNumbers = new List<int>();
     }
 
-    public abstract void MakeMove(Board board);
+    public abstract void MakeMove(Game game);
 
     //Check player containing numbers
     public bool HasNumber(int number)
@@ -54,21 +54,50 @@ public class HumanPlayer : Player
     }
 
     // todo if invalid move, retry
-    public override void MakeMove(Board board)
+    public override void MakeMove(Game game)
     {
         while (true)
         {
-
             WriteLine($"{Name}'s turn{(IsNumGame ? $". Your numbers: {string.Join(", ", AvailableNumbers)}" : $" ({Symbol})")}.");
-            Write("Enter move (row col value): ");
+            Write("Enter move (row col value) or help for other commands: ");
             string[] input = ReadLine()?.Split() ?? Array.Empty<string>();
+
+            if (input.Length == 1)
+            {
+                if (input[0].Equals("save", StringComparison.OrdinalIgnoreCase))
+                {
+                    Write("Enter filename to save (default: save.json): ");
+                    string filename = ReadLine()?.Trim() ?? "save.json";
+                    game.SaveGame(filename);
+                    ;
+                } else if (input[0].ToLower() == "undo")
+                {
+                    game.Undo();
+                    game.DisplayBoards();
+                    continue;
+                }
+                else if (input[0].ToLower() == "redo")
+                {
+                    game.Redo();
+                    game.DisplayBoards();
+                    continue;
+                }
+                else if (input[0].ToLower() == "help")
+                {
+                    WriteLine("Available commands:");
+                    WriteLine("undo - Revert last move");
+                    WriteLine("redo - Restore undone move");
+                    WriteLine("row col value - Make a move");
+                    continue;
+                }
+            }
 
             if (input.Length != 3 ||
                 !int.TryParse(input[0], out int row) ||
                 !int.TryParse(input[1], out int col) ||
                 !int.TryParse(input[2], out int value))
             {
-                WriteLine("Invalid input. Format: row col value");
+                WriteLine("Invalid input. Enter move (row col value) or help for other commands: ");
                 continue;
             }
 
@@ -82,7 +111,7 @@ public class HumanPlayer : Player
                 }
                 else
                 {
-                    if (!board.PlaceMove(row, col, this, value))
+                    if (!game.GameBoard.PlaceMove(row, col, this, value))
                     {
                         WriteLine("Invalid move.");
                     }
@@ -95,7 +124,7 @@ public class HumanPlayer : Player
             }
             else
             {
-                if (!board.PlaceMove(row, col, this))
+                if (!game.GameBoard.PlaceMove(row, col, this))
                 {
                     WriteLine("Invalid move.");
                 }
@@ -120,11 +149,11 @@ public class ComputerPlayer : Player
         }
     }
 
-    public override void MakeMove(Board board)
+    public override void MakeMove(Game game)
     {
         WriteLine($"{Name}'s turn {(IsNumGame ? "" : $"({Symbol})")}. Thinking...");
 
-        var emptyCells = board.GetEmptyCells();
+        var emptyCells = game.GameBoard.GetEmptyCells();
 
         if (IsNumGame)
         {
@@ -132,29 +161,29 @@ public class ComputerPlayer : Player
             {
                 foreach (int num in AvailableNumbers)
                 {
-                    if (board.PlaceMove(r, c, this, num))
+                    if (game.GameBoard.PlaceMove(r, c, this, num))
                     {
-                        if (board.CheckWin(this))
+                        if (game.GameBoard.CheckWin(this))
                         {
                             UseNumber(num);
                             WriteLine($"Computer places {num} at ({r + 1}, {c + 1})");
                             return;
                         }
-                        board.ResetNumber(r, c);
+                        game.GameBoard.ResetNumber(r, c);
                     }
                 }
             }
 
             var (row, col) = emptyCells[random.Next(emptyCells.Count)];
             int choice = ChooseRandomNumber();
-            board.PlaceMove(row, col, this, choice);
+            game.GameBoard.PlaceMove(row, col, this, choice);
             UseNumber(choice);
             WriteLine($"Computer randomly places {choice} at ({row + 1}, {col + 1}).");
         }
         else
         {
             var (row, col) = emptyCells[random.Next(emptyCells.Count)];
-            board.PlaceMove(row, col, this);
+            game.GameBoard.PlaceMove(row, col, this);
             WriteLine($"Computer places symbol at ({row + 1}, {col + 1}).");
         }
     }

@@ -1,12 +1,12 @@
 using System;
-
+using static System.Console;
 namespace a1;
 
 public class GomokuGame : Game
 {
     public GomokuGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2) { }
-    public GomokuGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
-    protected override void Initialize()
+    // public GomokuGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
+    public override void Initialize()
     {
         Board = new GomokuBoard(BoardSize);
     }
@@ -18,9 +18,9 @@ public class GomokuGame : Game
     protected override void MakePlay()
     {
         Player currentPlayer = Players[CurrentPlayerIndex];
-        currentPlayer.MakeMove(Board);
+        currentPlayer.MakeMove(this);
     }
-    protected override void DisplayBoards()
+    public override void DisplayBoards()
     {
         Board.Display();
     }

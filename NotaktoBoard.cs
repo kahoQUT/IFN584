@@ -4,7 +4,6 @@ namespace a1;
 
 public class NotaktoBoard : Board
 {
-    public int[,] Grid { get; set; }
     public int NumOfRow = 9;
     public int NumOfCol = 3;
     public int piece = 1;

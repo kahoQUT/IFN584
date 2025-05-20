@@ -64,6 +64,7 @@ public class Menu
         Player[] players = ChooseGameMode(boardSize, isNumerical);
 
         Game game = GameController.CreateGame(gameType, boardSize, players[0], players[1]);
+        game.Initialize();
         game.playGame();
     }
     public int ChooseGameType()
@@ -128,14 +129,60 @@ public class Menu
 
     public void LoadGame()
     {
-        Write("Enter save file path: ");
-        string path = ReadLine() ?? ""; //check if it is null
+        Write("Enter save file path (default: save.json): ");
+        string path = ReadLine()?.Trim() ?? "save.json";
 
         if (!File.Exists(path))
         {
             WriteLine("File not found.");
             return;
         }
+
+        try
+        {
+            GameState state = Game.LoadGame(path);
+
+            // Recreate players based on saved state
+            Player player1 = new HumanPlayer(state.Player1Name, state.IsNumGame, true, state.BoardSize);
+
+            Player player2 = state.Player2Type == "Human"
+                ? new HumanPlayer(state.Player2Name, state.IsNumGame, false, state.BoardSize)
+                : new ComputerPlayer(state.Player2Name, state.IsNumGame, state.BoardSize);
+
+            // Create the appropriate game type
+            Game game = GameController.CreateGame(state.GameType, state.BoardSize, player1, player2);
+
+            // Restore available numbers
+            game.Players[0].AvailableNumbers = state.Player1Numbers;
+            game.Players[1].AvailableNumbers = state.Player2Numbers;
+
+            // Restore the board state
+            game.GameBoard.Grid = state.Grid;
+            game.CurrentPlayerIndex = state.CurrentPlayerIndex;
+
+            // Start playing the loaded game
+            game.playGame();
+        }
+        catch (Exception ex)
+        {
+            WriteLine($"Failed to load game: {ex.Message}");
+        }
+
+
+        //create player
+        //         case "1":
+        //     return new Player[]
+        //     {
+        //     new HumanPlayer("Player 1", isNumerical, true, boardSize),
+        //     new HumanPlayer("Player 2", isNumerical, false, boardSize)
+        //     };
+        // case "2":
+        //     return new Player[]
+        //     {
+        //         new HumanPlayer("Player", isNumerical, true, boardSize),
+        //         new ComputerPlayer("Computer", isNumerical, boardSize)
+        //     };
+        //Game game = GameController.CreateGame(gameType, boardSize, players[0], players[1]);
 
         //Read the save file and turn into GameState object
         // string gameText = File.ReadAllText(path);
