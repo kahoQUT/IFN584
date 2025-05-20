@@ -5,7 +5,10 @@ namespace a1;
 
 public class NotaktoGame : Game
 {
-    public NotaktoGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2) { }
+    public NotaktoGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2)
+    {
+        IsDistinctPieces = false;
+    }
     // public NotaktoGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
 
     public override void Initialize()

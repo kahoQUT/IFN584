@@ -7,7 +7,8 @@ public class GameState
     // public string GameName { get; set; }
     public int GameType { get; set; } // 1=Numerical, 2=Notakto, 3=Gomoku
     public int BoardSize { get; set; }
-    public int[,] Grid { get; set; }
+    public int[][] Grid { get; set; }
+    public int[,] Grid2D { get; set; }
     public string Player1Name { get; set; }
     public string Player1Type { get; set; }
     public List<int> Player1Numbers { get; set; }

@@ -53,12 +53,11 @@ public class HumanPlayer : Player
         }
     }
 
-    // todo if invalid move, retry
     public override void MakeMove(Game game)
     {
         while (true)
         {
-            WriteLine($"{Name}'s turn{(IsNumGame ? $". Your numbers: {string.Join(", ", AvailableNumbers)}" : $" ({Symbol})")}.");
+            WriteLine($"{Name}'s turn{(game.IsDistinctPieces ? IsNumGame ? $". Your numbers: {string.Join(", ", AvailableNumbers)}" : $" ({Symbol})" : "")}.");
             Write("Enter move (row col value) or help for other commands: ");
             string[] input = ReadLine()?.Split() ?? Array.Empty<string>();
 
@@ -69,8 +68,9 @@ public class HumanPlayer : Player
                     Write("Enter filename to save (default: save.json): ");
                     string filename = ReadLine()?.Trim() ?? "save.json";
                     game.SaveGame(filename);
-                    ;
-                } else if (input[0].ToLower() == "undo")
+                    continue;
+                }
+                else if (input[0].ToLower() == "undo")
                 {
                     game.Undo();
                     game.DisplayBoards();
@@ -92,13 +92,28 @@ public class HumanPlayer : Player
                 }
             }
 
-            if (input.Length != 3 ||
-                !int.TryParse(input[0], out int row) ||
-                !int.TryParse(input[1], out int col) ||
-                !int.TryParse(input[2], out int value))
+            int row = 0, col = 0, value = 0;
+
+            if (!game.IsDistinctPieces)
             {
-                WriteLine("Invalid input. Enter move (row col value) or help for other commands: ");
-                continue;
+                if (input.Length != 2 ||
+                    !int.TryParse(input[0], out row) ||
+                    !int.TryParse(input[1], out col))
+                {
+                    WriteLine("Invalid input. Format: row col");
+                    continue;
+                }
+            }
+            else
+            {
+                if (input.Length != 3 ||
+                    !int.TryParse(input[0], out row) ||
+                    !int.TryParse(input[1], out col) ||
+                    !int.TryParse(input[2], out value))
+                {
+                    WriteLine("Invalid input. Format: row col value");
+                    continue;
+                }
             }
 
             row--; col--;
@@ -131,7 +146,7 @@ public class HumanPlayer : Player
                 else return;
             }
         }
-        
+
     }
 }
 
@@ -139,7 +154,7 @@ public class ComputerPlayer : Player
 {
     private Random random = new();
 
-    public ComputerPlayer(string name, bool isNumGame, int boardSize, char? symbol = null): base(name, isNumGame, symbol)
+    public ComputerPlayer(string name, bool isNumGame, int boardSize, char? symbol = null) : base(name, isNumGame, symbol)
     {
         if (isNumGame)
         {
