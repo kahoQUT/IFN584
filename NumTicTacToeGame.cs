@@ -26,7 +26,6 @@ public class NumTicTacToeGame : Game
     }
     protected override void EndGame()
     {
-        SwitchTurn();
         if (Board.CheckWin(Players[CurrentPlayerIndex]))
         {
             WriteLine($"{Players[CurrentPlayerIndex].Name} wins!");

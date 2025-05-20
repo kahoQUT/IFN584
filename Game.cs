@@ -36,6 +36,7 @@ public abstract class Game
         {
             DisplayBoards();
             MakePlay();
+            if(endOfGame()) break;
             SwitchTurn();
             SaveState();
         }
@@ -50,11 +51,6 @@ public abstract class Game
     protected abstract void EndGame();
     protected void SaveState()
     {
-        if (Board.Grid == null)
-{
-    Console.WriteLine("[ERROR] Board.Grid is null during SaveState.");
-    return;
-}
         var state = new GameState
         {
             Grid = (int[,])Board.Grid.Clone(),

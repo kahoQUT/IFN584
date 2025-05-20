@@ -12,7 +12,7 @@ public class GomokuGame : Game
     }
     protected override bool endOfGame()
     {
-        if (Board.CheckWin(Players[CurrentPlayerIndex]) || Board.GetEmptyCells().Count == 0) return true;
+        if (Board.CheckWin(Players[CurrentPlayerIndex]) || Board.GetEmptyCells().Count == 0) {return true;}
         else return false;
     }
     protected override void MakePlay()
@@ -26,6 +26,7 @@ public class GomokuGame : Game
     }
     protected override void EndGame()
     {
+        Board.Display();
         if (Board.CheckWin(Players[CurrentPlayerIndex]))
         {
             WriteLine($"{Players[CurrentPlayerIndex].Name} wins!");

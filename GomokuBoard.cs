@@ -4,13 +4,12 @@ namespace a1;
 
 public class GomokuBoard : Board
 {
-    private int[,] Grid;
-    private int Size = 15;
+    private const int Size = 15;
     private const int WINCOUNT = 5;
 
     public GomokuBoard()
     {
-        Grid = new int[15, 15];
+        Grid = new int[Size, Size];
     }
 
     public bool IsCellEmpty(int row, int col)
@@ -20,8 +19,6 @@ public class GomokuBoard : Board
 
     public override bool PlaceMove(int row, int col, Player player, int? value = null)
     {
-        Console.WriteLine($"[DEBUG] Grid[{row},{col}] = {Grid[row, col]}");
-
         if (!IsCellEmpty(row, col) || player.Symbol == null)
             return false;
 
