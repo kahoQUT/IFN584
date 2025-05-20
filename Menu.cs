@@ -63,7 +63,7 @@ public class Menu
 
         Player[] players = ChooseGameMode(boardSize, isNumerical);
 
-        Game game = GameController.CreateGame(gameType, boardSize, players[0], players[1]);
+        Game game = GameController.Create(gameType, boardSize, players[0], players[1]);
         game.Initialize();
         game.playGame();
     }
@@ -153,7 +153,7 @@ public class Menu
                 : new ComputerPlayer(state.Player2Name, state.IsNumGame, state.BoardSize);
 
             // Create the appropriate game type
-            Game game = GameController.CreateGame(state.GameType, state.BoardSize, player1, player2);
+            Game game = GameController.Create(state.GameType, state.BoardSize, player1, player2);
 
             // Restore available numbers
             game.Players[0].AvailableNumbers = state.Player1Numbers;
@@ -185,7 +185,7 @@ public class Menu
         //         new HumanPlayer("Player", isNumerical, true, boardSize),
         //         new ComputerPlayer("Computer", isNumerical, boardSize)
         //     };
-        //Game game = GameController.CreateGame(gameType, boardSize, players[0], players[1]);
+        //Game game = GameController.Create(gameType, boardSize, players[0], players[1]);
 
         //Read the save file and turn into GameState object
         // string gameText = File.ReadAllText(path);
