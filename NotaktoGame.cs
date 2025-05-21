@@ -30,7 +30,7 @@ public class NotaktoGame : Game
     protected override void EndGame()
     {
         Board.Display();
-        WriteLine($"Winner is {Players[CurrentPlayerIndex].Name}");
+        WriteLine($"Winner is {Players[(CurrentPlayerIndex + 1) % 2].Name}");
     }
     public override void DisplayHelpMenu()
     {

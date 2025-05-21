@@ -28,6 +28,7 @@ public class NumTicTacToeGame : Game
     {
         if (Board.CheckWin(Players[CurrentPlayerIndex]))
         {
+            Board.Display();
             WriteLine($"{Players[CurrentPlayerIndex].Name} wins!");
         }
         else
