@@ -50,6 +50,8 @@ public abstract class Game
     public abstract void DisplayBoards();
     protected abstract void MakePlay();
     protected abstract void EndGame();
+    public abstract void DisplayHelpMenu();
+
     protected void SaveState()
     {
         var state = new GameState

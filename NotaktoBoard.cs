@@ -49,7 +49,7 @@ public class NotaktoBoard : Board
             Write($"R{i + 1} ");
             for (int j = 0; j < NumOfCol; j++)
             {
-                string cell = Grid[i, j] == 0 ? " . " : AddSpacesAround(Grid[i, j].ToString());
+                string cell = Grid[i, j] == 0 ? " . " : AddSpacesAround("X");
                 Write($"|{cell}");
             }
             WriteLine("|");

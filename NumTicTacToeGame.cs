@@ -35,4 +35,18 @@ public class NumTicTacToeGame : Game
             WriteLine("It's a tie!");
         }
     }
+    public override void DisplayHelpMenu()
+    {
+        try
+        {
+            WriteLine();
+            string helpText = File.ReadAllText("NumTicTacToe_help.txt");
+            WriteLine(helpText);
+            WriteLine();
+        }
+        catch (Exception ex)
+        {
+            WriteLine("Could not load help menu. Error: " + ex.Message);
+        }
+    }
 }

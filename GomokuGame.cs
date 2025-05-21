@@ -12,7 +12,7 @@ public class GomokuGame : Game
     }
     protected override bool endOfGame()
     {
-        if (Board.CheckWin(Players[CurrentPlayerIndex]) || Board.GetEmptyCells().Count == 0) {return true;}
+        if (Board.CheckWin(Players[CurrentPlayerIndex]) || Board.GetEmptyCells().Count == 0) { return true; }
         else return false;
     }
     protected override void MakePlay()
@@ -34,6 +34,20 @@ public class GomokuGame : Game
         else
         {
             WriteLine("It's a tie!");
+        }
+    }
+    public override void DisplayHelpMenu()
+    {
+        try
+        {
+            WriteLine();
+            string helpText = File.ReadAllText("Gomoku_help.txt");
+            WriteLine(helpText);
+            WriteLine();
+        }
+        catch (Exception ex)
+        {
+            WriteLine("Could not load help menu. Error: " + ex.Message);
         }
     }
 }

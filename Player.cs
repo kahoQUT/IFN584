@@ -85,10 +85,7 @@ public class HumanPlayer : Player
                 }
                 else if (input[0].ToLower() == "help")
                 {
-                    WriteLine("Available commands:");
-                    WriteLine("undo - Revert last move");
-                    WriteLine("redo - Restore undone move");
-                    WriteLine("row col value - Make a move");
+                    game.DisplayHelpMenu();
                     continue;
                 }
             }

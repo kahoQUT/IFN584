@@ -32,4 +32,18 @@ public class NotaktoGame : Game
         Board.Display();
         WriteLine($"Winner is {Players[CurrentPlayerIndex].Name}");
     }
+    public override void DisplayHelpMenu()
+    {
+        try
+        {
+            WriteLine();
+            string helpText = File.ReadAllText("Notakto_help.txt");
+            WriteLine(helpText);
+            WriteLine();
+        }
+        catch (Exception ex)
+        {
+            WriteLine("Could not load help menu. Error: " + ex.Message);
+        }
+    }
 }
