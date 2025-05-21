@@ -153,14 +153,17 @@ public class Menu
                 : new ComputerPlayer(state.Player2Name, state.IsNumGame, state.BoardSize);
 
             // Create the appropriate game type
+
             Game game = GameController.Create(state.GameType, state.BoardSize, player1, player2);
+            // Game game = GameController.CreateGame(state.GameType, state.BoardSize, player1, player2);
+            // game.Initialize();
 
             // Restore available numbers
             game.Players[0].AvailableNumbers = state.Player1Numbers;
             game.Players[1].AvailableNumbers = state.Player2Numbers;
 
             // Restore the board state
-            game.GameBoard.Grid = state.Grid;
+            game.GameBoard.Grid = state.Grid2D;
             game.CurrentPlayerIndex = state.CurrentPlayerIndex;
 
             // Start playing the loaded game

@@ -53,13 +53,13 @@ public class HumanPlayer : Player
         }
     }
 
-    // todo if invalid move, retry
     public override void MakeMove(Game game)
     {
         while (true)
         {
             WriteLine($"{Name}'s turn{(IsNumGame ? $". Your numbers: {string.Join(", ", AvailableNumbers)}" : $" ({Symbol})")}.");
             Write($"Enter move ({(IsNumGame ? "row col number" : "row col")}) or help for other commands: ");
+
             string[] input = ReadLine()?.Split() ?? Array.Empty<string>();
 
             if (input.Length == 1)
@@ -69,8 +69,9 @@ public class HumanPlayer : Player
                     Write("Enter filename to save (default: save.json): ");
                     string filename = ReadLine()?.Trim() ?? "save.json";
                     game.SaveGame(filename);
-                    ;
-                } else if (input[0].ToLower() == "undo")
+                    continue;
+                }
+                else if (input[0].ToLower() == "undo")
                 {
                     game.Undo();
                     game.DisplayBoards();
@@ -103,6 +104,7 @@ public class HumanPlayer : Player
                     continue;
                 }
                 row--; col--;
+
                 if (!HasNumber(value))
                 {
                     WriteLine("You don't have that number.");
@@ -137,7 +139,7 @@ public class HumanPlayer : Player
                 else return;
             }
         }
-        
+
     }
 }
 
@@ -145,7 +147,7 @@ public class ComputerPlayer : Player
 {
     private Random random = new();
 
-    public ComputerPlayer(string name, bool isNumGame, int boardSize, char? symbol = null): base(name, isNumGame, symbol)
+    public ComputerPlayer(string name, bool isNumGame, int boardSize, char? symbol = null) : base(name, isNumGame, symbol)
     {
         if (isNumGame)
         {
