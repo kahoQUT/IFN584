@@ -4,12 +4,12 @@ namespace a1;
 
 public class GomokuBoard : Board
 {
-    private const int Size = 15;
+    private const int SIZE = 15;
     private const int WINCOUNT = 5;
 
     public GomokuBoard()
     {
-        Grid = new int[Size, Size];
+        Grid = new int[SIZE, SIZE];
     }
 
     public bool IsCellEmpty(int row, int col)
@@ -29,8 +29,8 @@ public class GomokuBoard : Board
     public override List<(int, int)> GetEmptyCells()
     {
         List<(int, int)> empty = new();
-        for (int i = 0; i < Size; i++)
-            for (int j = 0; j < Size; j++)
+        for (int i = 0; i < SIZE; i++)
+            for (int j = 0; j < SIZE; j++)
                 if (Grid[i, j] == 0)
                     empty.Add((i, j));
         return empty;
@@ -45,15 +45,15 @@ public class GomokuBoard : Board
     {
         WriteLine();
         Write("    ");
-        for (int i = 0; i < Size; i++)
+        for (int i = 0; i < SIZE; i++)
         {
             Write(" "+(i + 1).ToString("D2")+" ");
         }
         WriteLine();
-        for (int i = 0; i < Size; i++)
+        for (int i = 0; i < SIZE; i++)
         {
             Write("R" + (i + 1).ToString("D2") + " ");
-            for (int j = 0; j < Size; j++)
+            for (int j = 0; j < SIZE; j++)
             {
                 switch(Grid[i,j])
                 {
@@ -79,9 +79,9 @@ public class GomokuBoard : Board
         if(player.Symbol == 'X') target = 1;
         if(player.Symbol == 'O') target = 2;
 
-        for (int i = 0; i < Size; i++)
+        for (int i = 0; i < SIZE; i++)
         {
-            for (int j = 0; j < Size; j++)
+            for (int j = 0; j < SIZE; j++)
             {
                 if (Grid[i, j] != target) continue;
 
@@ -105,7 +105,7 @@ public class GomokuBoard : Board
             int r = row + dr * i;
             int c = col + dc * i;
 
-            if (r < 0 || r >= Size || c < 0 || c >= Size || Grid[r, c] != target)
+            if (r < 0 || r >= SIZE || c < 0 || c >= SIZE || Grid[r, c] != target)
                 return false;
         }
         return true;

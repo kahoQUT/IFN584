@@ -108,7 +108,7 @@ public class HumanPlayer : Player
                 }
                 else
                 {
-                    if (!game.GameBoard.PlaceMove(row, col, this, value))
+                    if (!game.Board.PlaceMove(row, col, this, value))
                     {
                         WriteLine("Invalid move.");
                     }
@@ -129,7 +129,7 @@ public class HumanPlayer : Player
                     continue;
                 }
                 row--; col--;
-                if (!game.GameBoard.PlaceMove(row, col, this))
+                if (!game.Board.PlaceMove(row, col, this))
                 {
                     WriteLine("Invalid move.");
                 }
@@ -158,37 +158,38 @@ public class ComputerPlayer : Player
     {
         WriteLine($"{Name}'s turn {(IsNumGame ? "" : $"({Symbol})")}. Thinking...");
 
-        var emptyCells = game.GameBoard.GetEmptyCells();
+        var emptyCells = game.Board.GetEmptyCells();
 
         if (IsNumGame)
         {
+            //winning move
             foreach (var (r, c) in emptyCells)
             {
                 foreach (int num in AvailableNumbers)
                 {
-                    if (game.GameBoard.PlaceMove(r, c, this, num))
+                    if (game.Board.PlaceMove(r, c, this, num))
                     {
-                        if (game.GameBoard.CheckWin(this))
+                        if (game.Board.CheckWin(this))
                         {
                             UseNumber(num);
                             WriteLine($"Computer places {num} at ({r + 1}, {c + 1})");
                             return;
                         }
-                        game.GameBoard.ResetNumber(r, c);
+                        game.Board.ResetNumber(r, c);
                     }
                 }
             }
 
             var (row, col) = emptyCells[random.Next(emptyCells.Count)];
             int choice = ChooseRandomNumber();
-            game.GameBoard.PlaceMove(row, col, this, choice);
+            game.Board.PlaceMove(row, col, this, choice);
             UseNumber(choice);
             WriteLine($"Computer randomly places {choice} at ({row + 1}, {col + 1}).");
         }
         else
         {
             var (row, col) = emptyCells[random.Next(emptyCells.Count)];
-            game.GameBoard.PlaceMove(row, col, this);
+            game.Board.PlaceMove(row, col, this);
             WriteLine($"Computer places symbol at ({row + 1}, {col + 1}).");
         }
     }
