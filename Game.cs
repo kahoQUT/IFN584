@@ -7,7 +7,7 @@ namespace a1;
 public abstract class Game
 {
     public bool IsDistinctPieces = true;
-    protected Board Board;
+    public Board Board;
     public Board GameBoard => Board;
     public Player[] Players;
     protected int BoardSize;

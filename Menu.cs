@@ -63,7 +63,7 @@ public class Menu
 
         Player[] players = ChooseGameMode(boardSize, isNumerical);
 
-        Game game = GameController.Create(gameType, boardSize, players[0], players[1]);
+        Game game = GameController.CreateGame(gameType, boardSize, players[0], players[1]);
         game.Initialize();
         game.playGame();
     }
@@ -157,8 +157,7 @@ public class Menu
 
             // Create the appropriate game type
 
-            Game game = GameController.Create(state.GameType, state.BoardSize, player1, player2);
-            // Game game = GameController.CreateGame(state.GameType, state.BoardSize, player1, player2);
+            Game game = GameController.CreateGame(state.GameType, state.BoardSize, player1, player2);
             game.Initialize();
 
             // Restore available numbers
@@ -166,7 +165,7 @@ public class Menu
             game.Players[1].AvailableNumbers = state.Player2Numbers;
 
             // Restore the board state
-            game.GameBoard.Grid = state.Grid2D;
+            game.Board.Grid = state.Grid2D;
             game.CurrentPlayerIndex = state.CurrentPlayerIndex;
 
             // Start playing the loaded game
@@ -176,51 +175,5 @@ public class Menu
         {
             WriteLine($"Failed to load game: {ex.Message}");
         }
-
-
-        //create player
-        //         case "1":
-        //     return new Player[]
-        //     {
-        //     new HumanPlayer("Player 1", isNumerical, true, boardSize),
-        //     new HumanPlayer("Player 2", isNumerical, false, boardSize)
-        //     };
-        // case "2":
-        //     return new Player[]
-        //     {
-        //         new HumanPlayer("Player", isNumerical, true, boardSize),
-        //         new ComputerPlayer("Computer", isNumerical, boardSize)
-        //     };
-        //Game game = GameController.Create(gameType, boardSize, players[0], players[1]);
-
-        //Read the save file and turn into GameState object
-        // string gameText = File.ReadAllText(path);
-        // GameState state = JsonSerializer.Deserialize<GameState>(gameText);
-        // if (state == null)
-        // {
-        //     WriteLine("Failed to load.");
-        //     return;
-        // }
-        // //Recreating the board
-        // Board board = new Board(state.BoardSize);
-        // for (int i = 0; i < state.BoardSize; i++)
-        // {
-        //     for (int j = 0; j < state.BoardSize; j++)
-        //     {
-        //         board.PlaceNumber(i, j, state.Grid[i][j]);
-        //     }
-        // }
-
-        // Player player1 = new Player("Player 1 (Odd)", PlayerType.Human, true, state.BoardSize * state.BoardSize)
-        // {
-        //     AvailableNumbers = state.Player1Numbers
-        // };
-        // Player player2 = new Player(state.Player2Name, state.Player2Type, false, state.BoardSize * state.BoardSize)
-        // {
-        //     AvailableNumbers = state.Player2Numbers
-        // };
-
-        // Game game = new Game(board, player1, player2, state.CurrentPlayerIndex);
-        // game.Play();
     }
 }
