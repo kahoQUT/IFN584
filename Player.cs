@@ -92,10 +92,10 @@ public class HumanPlayer : Player
 
             if (IsNumGame)
             {
-                 if (input.Length != 3 ||
-                !int.TryParse(input[0], out int row) ||
-                !int.TryParse(input[1], out int col) ||
-                !int.TryParse(input[2], out int value))
+                if (input.Length != 3 ||
+               !int.TryParse(input[0], out int row) ||
+               !int.TryParse(input[1], out int col) ||
+               !int.TryParse(input[2], out int value))
                 {
                     WriteLine("Invalid input. Enter move (row col value) or help for other commands: ");
                     continue;
@@ -162,6 +162,7 @@ public class ComputerPlayer : Player
 
         if (IsNumGame)
         {
+            // First try to find a winning move
             foreach (var (r, c) in emptyCells)
             {
                 foreach (int num in AvailableNumbers)
@@ -171,22 +172,53 @@ public class ComputerPlayer : Player
                         if (game.GameBoard.CheckWin(this))
                         {
                             UseNumber(num);
-                            WriteLine($"Computer places {num} at ({r + 1}, {c + 1})");
+                            WriteLine($"Computer places winning move {num} at ({r + 1}, {c + 1})");
                             return;
                         }
-                        game.GameBoard.ResetNumber(r, c);
+                        game.GameBoard.ResetNumber(r, c); // Undo the test move
                     }
                 }
             }
 
+            // If no winning move, make a random move
             var (row, col) = emptyCells[random.Next(emptyCells.Count)];
             int choice = ChooseRandomNumber();
             game.GameBoard.PlaceMove(row, col, this, choice);
             UseNumber(choice);
-            WriteLine($"Computer randomly places {choice} at ({row + 1}, {col + 1}).");
+            WriteLine($"Computer places {choice} at ({row + 1}, {col + 1}).");
         }
         else
         {
+            // For non-numerical games (like Gomoku or Notakto)
+            // First try to find a winning move
+
+            (int, int)? losingMove = null; // for NotaktoGame
+            foreach (var (r, c) in emptyCells)
+            {
+                if (game.GameBoard.PlaceMove(r, c, this))
+                {
+                    if (game.GameBoard.CheckWin(this))
+                    {
+                        if (game is not NotaktoGame)
+                        {
+                            WriteLine($"Computer places winning move at ({r + 1}, {c + 1})");
+                            return;
+                        }
+                        else
+                        {
+                            losingMove = (r, c);
+                        }
+                    }
+                    game.GameBoard.ResetNumber(r, c); // Undo the test move
+                }
+            }
+
+            if (losingMove.HasValue && emptyCells.Count > 1)
+            {
+                emptyCells.Remove(losingMove.Value);
+            }
+
+            // If no winning move, make a random move
             var (row, col) = emptyCells[random.Next(emptyCells.Count)];
             game.GameBoard.PlaceMove(row, col, this);
             WriteLine($"Computer places symbol at ({row + 1}, {col + 1}).");
