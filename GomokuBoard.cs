@@ -4,7 +4,9 @@ namespace a1;
 
 public class GomokuBoard : Board
 {
+    //Constant of board size for gomokuBoard
     private const int SIZE = 15;
+    //Constant of winning count in a row
     private const int WINCOUNT = 5;
 
     public GomokuBoard()
@@ -26,6 +28,7 @@ public class GomokuBoard : Board
         return true;
     }
 
+    //Get Empty Cell from the existing Grid
     public override List<(int, int)> GetEmptyCells()
     {
         List<(int, int)> empty = new();
@@ -41,21 +44,24 @@ public class GomokuBoard : Board
         return $" {input} ";
     }
 
+    //Visualise the board
     public override void Display()
     {
         WriteLine();
         Write("    ");
+        //Displaying Column number
         for (int i = 0; i < SIZE; i++)
         {
-            Write(" "+(i + 1).ToString("D2")+" ");
+            Write(" " + (i + 1).ToString("D2") + " ");
         }
         WriteLine();
+        //Displaying Row number
         for (int i = 0; i < SIZE; i++)
         {
             Write("R" + (i + 1).ToString("D2") + " ");
             for (int j = 0; j < SIZE; j++)
             {
-                switch(Grid[i,j])
+                switch (Grid[i, j])
                 {
                     case 1:
                         Write("| X ");
@@ -75,6 +81,7 @@ public class GomokuBoard : Board
 
     public override bool CheckWin(Player player)
     {
+        //Checking cell value whether match target value
         int target = 0;
         if(player.Symbol == 'X') target = 1;
         if(player.Symbol == 'O') target = 2;
@@ -85,10 +92,14 @@ public class GomokuBoard : Board
             {
                 if (Grid[i, j] != target) continue;
 
-                if (CheckDirection(i, j, 0, 1, target) || // horizontal
-                    CheckDirection(i, j, 1, 0, target) || // vertical
-                    CheckDirection(i, j, 1, 1, target) || // diagonal down-right
-                    CheckDirection(i, j, 1, -1, target))  // diagonal down-left
+                // Horizontal
+                if (CheckDirection(i, j, 0, 1, target) ||
+                // Vertical
+                    CheckDirection(i, j, 1, 0, target) || 
+                // Diagonal down-right
+                    CheckDirection(i, j, 1, 1, target) || 
+                // Diagonal down-left
+                    CheckDirection(i, j, 1, -1, target))  
                 {
                     return true;
                 }

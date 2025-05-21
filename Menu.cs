@@ -51,9 +51,11 @@ public class Menu
                 boardSize = ChooseBoardSize();
                 break;
             case 2:
+            //default board size for notakto game
                 boardSize = 3;
                 break;
             case 3:
+            //default board size for gomoku game
                 boardSize = 15;
                 break;
             default:
@@ -100,12 +102,14 @@ public class Menu
             switch (input)
             {
                 case "1":
+                //Creating Two Human Players
                     return new Player[]
                     {
                         new HumanPlayer("Player 1", isNumerical, true, boardSize, symbol1),
                         new HumanPlayer("Player 2", isNumerical, false, boardSize, symbol2)
                     };
                 case "2":
+                //Creating Human Player and Computer Player
                     return new Player[]
                     {
                         new HumanPlayer("Player", isNumerical, true, boardSize, symbol1),

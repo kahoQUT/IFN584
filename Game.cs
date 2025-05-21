@@ -8,7 +8,6 @@ public abstract class Game
 {
     public bool IsDistinctPieces = true;
     public Board Board;
-    public Board GameBoard => Board;
     public Player[] Players;
     protected int BoardSize;
     public int CurrentPlayerIndex;
@@ -21,13 +20,6 @@ public abstract class Game
         CurrentPlayerIndex = 0;
         BoardSize = boardSize;
     }
-
-    // public Game(int boardSize, Player player1, Player player2, GameState state)
-    // {
-    //     Players = new Player[] { player1, player2 };
-    //     CurrentPlayerIndex = state.CurrentPlayerIndex;
-    //     BoardSize = boardSize;
-    // }
 
     //Template method outling the steps
     public void playGame()

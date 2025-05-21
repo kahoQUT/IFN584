@@ -4,6 +4,7 @@ namespace a1;
 
 public class GameController
 {
+    //Dictinary list for three game factory
     private static Dictionary<int, IGameFactory> factories = new()
     {
         { 1, new NumTicTacToeFactory() },
@@ -14,6 +15,7 @@ public class GameController
     {
         if (factories.TryGetValue(gameType, out var factory))
         {
+            //Creating game from factory
             return factory.CreateGame(boardSize, player1, player2);
         }
         else

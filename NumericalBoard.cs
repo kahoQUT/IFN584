@@ -17,6 +17,7 @@ public class NumericalBoard : Board
         Grid = new int[size, size];
     }
 
+    //Get Empty Cell from the existing Grid
     public override List<(int, int)> GetEmptyCells()
     {
         List<(int, int)> empty = new();

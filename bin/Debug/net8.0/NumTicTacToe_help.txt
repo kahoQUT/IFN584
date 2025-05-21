@@ -1,0 +1,19 @@
+Numerical Tic-Tac-Toe Help Menu
+==============================
+
+Objective:
+- Be the first player to complete a row, column, or diagonal that sums to the magic number.
+
+Game Rules:
+1. Players take turns placing numbers on a nxn grid
+2. Each number can only be used once in the entire game
+3. The magic number is calculated as: n × (n² + 1) / 2 (15 for 3x3)
+4. The first player to make any row, column, or diagonal sum to the magic number wins
+5. If all cells are filled without any winning lines, the game is a tie
+
+Controls:
+- Enter your move in format: <row> <column> <number> (e.g., "1 2 5")
+- 'undo' to undo your last move
+- 'redo' to redo an undone move
+- 'save' to save the game
+- 'help' to display this help menu

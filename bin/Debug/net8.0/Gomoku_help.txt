@@ -1,0 +1,17 @@
+Gomoku Help Menu
+================
+
+Objective:
+- Be the first player to get five of your symbols in a row (horizontally, vertically, or diagonally).
+
+Game Rules:
+1. Players alternate placing X (Player 1) and O (Player 2) on a 15×15 grid
+2. The first player to get an unbroken row of five symbols wins
+3. If the board fills completely with no five-in-a-row, the game is a tie
+
+Controls:
+- Enter your move in format: <row> <column> (e.g., "8 15")
+- 'undo' to undo your last move
+- 'redo' to redo an undone move
+- 'save' to save the game
+- 'help' to display this help menu

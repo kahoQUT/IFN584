@@ -162,7 +162,7 @@ public class ComputerPlayer : Player
 
         if (IsNumGame)
         {
-            //winning move
+            // try to find a winning move
 
             foreach (var (r, c) in emptyCells)
             {
@@ -191,14 +191,14 @@ public class ComputerPlayer : Player
         else
         {
             // For non-numerical games (like Gomoku or Notakto)
-            // First try to find a winning move
+            // try to find a winning move
 
             (int, int)? losingMove = null; // for NotaktoGame
             foreach (var (r, c) in emptyCells)
             {
-                if (game.GameBoard.PlaceMove(r, c, this))
+                if (game.Board.PlaceMove(r, c, this))
                 {
-                    if (game.GameBoard.CheckWin(this))
+                    if (game.Board.CheckWin(this))
                     {
                         if (game is not NotaktoGame)
                         {
@@ -210,7 +210,7 @@ public class ComputerPlayer : Player
                             losingMove = (r, c);
                         }
                     }
-                    game.GameBoard.ResetNumber(r, c); // Undo the test move
+                    game.Board.ResetNumber(r, c); // Undo the test move
                 }
             }
 
