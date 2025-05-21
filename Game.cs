@@ -32,7 +32,7 @@ public abstract class Game
     //Template method outling the steps
     public void playGame()
     {
-        Initialize();
+        // Initialize();
         while (!endOfGame())
         {
             DisplayBoards();

@@ -144,19 +144,22 @@ public class Menu
         try
         {
             GameState state = Game.LoadGame(path);
+            
+            char? symbol1 = state.IsNumGame ? null : 'X';
+            char? symbol2 = state.IsNumGame ? null : 'O';
 
             // Recreate players based on saved state
-            Player player1 = new HumanPlayer(state.Player1Name, state.IsNumGame, true, state.BoardSize);
+            Player player1 = new HumanPlayer(state.Player1Name, state.IsNumGame, true, state.BoardSize, symbol1);
 
             Player player2 = state.Player2Type == "Human"
-                ? new HumanPlayer(state.Player2Name, state.IsNumGame, false, state.BoardSize)
-                : new ComputerPlayer(state.Player2Name, state.IsNumGame, state.BoardSize);
+                ? new HumanPlayer(state.Player2Name, state.IsNumGame, false, state.BoardSize, symbol1)
+                : new ComputerPlayer(state.Player2Name, state.IsNumGame, state.BoardSize, symbol2);
 
             // Create the appropriate game type
 
             Game game = GameController.Create(state.GameType, state.BoardSize, player1, player2);
             // Game game = GameController.CreateGame(state.GameType, state.BoardSize, player1, player2);
-            // game.Initialize();
+            game.Initialize();
 
             // Restore available numbers
             game.Players[0].AvailableNumbers = state.Player1Numbers;
