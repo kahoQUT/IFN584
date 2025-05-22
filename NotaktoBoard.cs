@@ -62,6 +62,10 @@ public class NotaktoBoard : Board
 
     public bool IsCellEmpty(int row, int col)
     {
+        if (row < 0 || row >= NUM_OF_ROW || col < 0 || col >= NUM_OF_COL)
+        {
+            return false;
+        }
         return Grid[row, col] == 0;
     }
 

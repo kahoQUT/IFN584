@@ -40,6 +40,7 @@ public abstract class Player
 }
 public class HumanPlayer : Player
 {
+    //Constructor of Human Player
     public HumanPlayer(string name, bool isNumGame, bool isFirstPlayer, int boardSize, char? symbol = null) : base(name, isNumGame, symbol)
     {
         if (isNumGame)
@@ -70,6 +71,7 @@ public class HumanPlayer : Player
                     string pathInput = ReadLine()?.Trim();
                     string filename = string.IsNullOrEmpty(pathInput) ? "save.json" : pathInput;
                     game.SaveGame(filename);
+                    game.DisplayBoards();
                     continue;
                 }
                 else if (input[0].ToLower() == "undo")
@@ -89,6 +91,7 @@ public class HumanPlayer : Player
                     game.DisplayHelpMenu();
                     continue;
                 }
+                
             }
 
             // Validation for move input
@@ -146,6 +149,7 @@ public class ComputerPlayer : Player
 {
     private Random random = new();
 
+    //Constructor of Computer Player
     public ComputerPlayer(string name, bool isNumGame, int boardSize, char? symbol = null) : base(name, isNumGame, symbol)
     {
         if (isNumGame)
@@ -158,7 +162,6 @@ public class ComputerPlayer : Player
 
     public override void MakeMove(Game game)
     {
-        WriteLine($"{Name}'s turn {(IsNumGame ? "" : $"({Symbol})")}. Thinking...");
 
         var emptyCells = game.Board.GetEmptyCells();
 
