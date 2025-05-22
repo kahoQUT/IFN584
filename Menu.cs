@@ -137,7 +137,8 @@ public class Menu
     public void LoadGame()
     {
         Write("Enter save file path (default: save.json): ");
-        string path = ReadLine()?.Trim() ?? "save.json";
+        string input = ReadLine()?.Trim();
+        string path = string.IsNullOrEmpty(input) ? "save.json" : input;
 
         if (!File.Exists(path))
         {
@@ -160,7 +161,6 @@ public class Menu
                 : new ComputerPlayer(state.Player2Name, state.IsNumGame, state.BoardSize, symbol2);
 
             // Create the appropriate game type
-
             Game game = GameController.CreateGame(state.GameType, state.BoardSize, player1, player2);
             game.Initialize();
 

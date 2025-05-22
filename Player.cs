@@ -64,10 +64,11 @@ public class HumanPlayer : Player
 
             if (input.Length == 1)
             {
-                if (input[0].Equals("save", StringComparison.OrdinalIgnoreCase))
+                if (input[0].ToLower() == "save")
                 {
                     Write("Enter filename to save (default: save.json): ");
-                    string filename = ReadLine()?.Trim() ?? "save.json";
+                    string pathInput = ReadLine()?.Trim();
+                    string filename = string.IsNullOrEmpty(pathInput) ? "save.json" : pathInput;
                     game.SaveGame(filename);
                     continue;
                 }
@@ -90,6 +91,7 @@ public class HumanPlayer : Player
                 }
             }
 
+            // Validation for move input
             if (IsNumGame)
             {
                 if (input.Length != 3 ||
@@ -163,7 +165,6 @@ public class ComputerPlayer : Player
         if (IsNumGame)
         {
             // try to find a winning move
-
             foreach (var (r, c) in emptyCells)
             {
                 foreach (int num in AvailableNumbers)
@@ -176,7 +177,7 @@ public class ComputerPlayer : Player
                             WriteLine($"Computer places winning move {num} at ({r + 1}, {c + 1})");
                             return;
                         }
-                        game.Board.ResetNumber(r, c);// Undo the test move
+                        game.Board.ResetNumber(r, c); // Undo the test move
                     }
                 }
             }
@@ -192,8 +193,7 @@ public class ComputerPlayer : Player
         {
             // For non-numerical games (like Gomoku or Notakto)
             // try to find a winning move
-
-            (int, int)? losingMove = null; // for NotaktoGame
+            (int, int)? losingMove = null; // for Notakto
             foreach (var (r, c) in emptyCells)
             {
                 if (game.Board.PlaceMove(r, c, this))
@@ -214,6 +214,7 @@ public class ComputerPlayer : Player
                 }
             }
 
+            // for Notakto, try to avoid losing move
             if (losingMove.HasValue && emptyCells.Count > 1)
             {
                 emptyCells.Remove(losingMove.Value);

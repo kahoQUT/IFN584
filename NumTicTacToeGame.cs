@@ -7,7 +7,7 @@ public class NumTicTacToeGame : Game
     public NumTicTacToeGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2) { }
     public override void Initialize()
     {
-        Board = new NumericalBoard(BoardSize);
+        Board = new NumTicTacToeBoard(BoardSize);
     }
     protected override bool endOfGame()
     {
@@ -39,6 +39,7 @@ public class NumTicTacToeGame : Game
     }
     public override void DisplayHelpMenu()
     {
+        //Reading Help Menu from text file
         try
         {
             WriteLine();

@@ -6,10 +6,7 @@ namespace a1;
 public class NotaktoGame : Game
 {
     public NotaktoGame(int boardSize, Player p1, Player p2) : base(boardSize, p1, p2)
-    {
-        IsDistinctPieces = false;
-    }
-    // public NotaktoGame(int boardSize, Player p1, Player p2, GameState state) : base(boardSize, p1, p2, state) { }
+    {}
 
     public override void Initialize()
     {
@@ -21,6 +18,7 @@ public class NotaktoGame : Game
     }
     protected override void MakePlay()
     {
+        //Player make their corresponding move
         Players[CurrentPlayerIndex].MakeMove(this);
     }
     public override void DisplayBoards()
@@ -34,6 +32,7 @@ public class NotaktoGame : Game
     }
     public override void DisplayHelpMenu()
     {
+        //Reading Help Menu from text file
         try
         {
             WriteLine();

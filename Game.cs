@@ -6,12 +6,13 @@ namespace a1;
 
 public abstract class Game
 {
-    public bool IsDistinctPieces = true;
     public Board Board;
     public Player[] Players;
     protected int BoardSize;
     public int CurrentPlayerIndex;
+    // for undo
     protected Stack<GameState> GameStateHistory = new Stack<GameState>();
+    // for redo
     protected Stack<GameState> RedoStack = new Stack<GameState>();
 
     public Game(int boardSize, Player player1, Player player2)
@@ -24,7 +25,6 @@ public abstract class Game
     //Template method outling the steps
     public void playGame()
     {
-        // Initialize();
         while (!endOfGame())
         {
             DisplayBoards();
@@ -56,6 +56,7 @@ public abstract class Game
     }
     public void Undo()
     {
+        // Not allow undo at the start of the game
         if (GameStateHistory.Count > 1)
         {
             // undo opponent move & player's previous move
@@ -80,6 +81,7 @@ public abstract class Game
             }
             else
             {
+                // restore GameState back to 2 moves (opponent & player) ago
                 var previousState = GameStateHistory.Peek();
                 Board.Grid = (int[,])previousState.Grid2D.Clone();
                 CurrentPlayerIndex = previousState.CurrentPlayerIndex;
@@ -113,40 +115,42 @@ public abstract class Game
     }
     public void SaveGame(string fileName)
     {
-            int[][] gridAsJagged = new int[Board.Grid.GetLength(0)][];
-            for (int i = 0; i < Board.Grid.GetLength(0); i++)
+        // Convert 2D array to jagged array to be serialized into save file
+        int[][] gridAsJagged = new int[Board.Grid.GetLength(0)][];
+        for (int i = 0; i < Board.Grid.GetLength(0); i++)
+        {
+            gridAsJagged[i] = new int[Board.Grid.GetLength(1)];
+            for (int j = 0; j < Board.Grid.GetLength(1); j++)
             {
-                gridAsJagged[i] = new int[Board.Grid.GetLength(1)];
-                for (int j = 0; j < Board.Grid.GetLength(1); j++)
-                {
-                    gridAsJagged[i][j] = Board.Grid[i, j];
-                }
+                gridAsJagged[i][j] = Board.Grid[i, j];
             }
+        }
 
-            var state = new GameState
-            {
-                GameType = this is NumTicTacToeGame ? 1 : 
-                            this is NotaktoGame ? 2 : 3,
-                BoardSize = BoardSize,
-                Grid = gridAsJagged,
-                Player1Name = Players[0].Name,
-                Player1Type = Players[0] is HumanPlayer ? "Human" : "Computer",
-                Player1Numbers = new List<int>(Players[0].AvailableNumbers),
-                Player2Name = Players[1].Name,
-                Player2Type = Players[1] is HumanPlayer ? "Human" : "Computer",
-                Player2Numbers = new List<int>(Players[1].AvailableNumbers),
-                CurrentPlayerIndex = CurrentPlayerIndex,
-                IsNumGame = Players[0].IsNumGame
-            };
+        var state = new GameState
+        {
+            GameType = this is NumTicTacToeGame ? 1 : 
+                        this is NotaktoGame ? 2 : 3,
+            BoardSize = BoardSize,
+            Grid = gridAsJagged,
+            Player1Name = Players[0].Name,
+            Player1Type = Players[0] is HumanPlayer ? "Human" : "Computer",
+            Player1Numbers = new List<int>(Players[0].AvailableNumbers),
+            Player2Name = Players[1].Name,
+            Player2Type = Players[1] is HumanPlayer ? "Human" : "Computer",
+            Player2Numbers = new List<int>(Players[1].AvailableNumbers),
+            CurrentPlayerIndex = CurrentPlayerIndex,
+            IsNumGame = Players[0].IsNumGame
+        };
 
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonString = JsonSerializer.Serialize(state, options);
-            File.WriteAllText(fileName, jsonString);
-            WriteLine($"Game saved to {fileName}");
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string jsonString = JsonSerializer.Serialize(state, options);
+        File.WriteAllText(fileName, jsonString);
+        WriteLine($"Game saved to {fileName}");
     }
 
     public static GameState LoadGame(string fileName)
     {
+        // create GameState from json file
         string jsonString = File.ReadAllText(fileName);
         var state = JsonSerializer.Deserialize<GameState>(jsonString);
         // Convert jagged array back to 2D array

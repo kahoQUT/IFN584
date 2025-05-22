@@ -13,7 +13,7 @@ public abstract class Board
 
     public abstract bool CheckWin(Player player);
 
-    public abstract bool ResetNumber(int row, int col); // Only for numerical games
+    public abstract bool ResetNumber(int row, int col);
 
     
 }

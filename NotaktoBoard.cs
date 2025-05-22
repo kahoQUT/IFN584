@@ -4,16 +4,18 @@ namespace a1;
 
 public class NotaktoBoard : Board
 {
-    public int NumOfRow = 9;
-    public int NumOfCol = 3;
-    public int piece = 1;
+    public const int NUM_OF_ROW = 9;
+    public const int NUM_OF_COL = 3;
+    public const int PIECE = 3;
 
+    //Constructor for new Board
     public NotaktoBoard()
     {
         // first 3 row is board 1, middle 3 row is board 2, last 3 row is board 3
-        Grid = new int[NumOfRow, NumOfCol];
+        Grid = new int[NUM_OF_ROW, NUM_OF_COL];
     }
 
+    //Get Empty Cell from non-dead board
     public override List<(int, int)> GetEmptyCells()
     {
         var empty = new List<(int, int)>();
@@ -22,7 +24,7 @@ public class NotaktoBoard : Board
             int offset = b * 3;
             if (BoardIsDead(offset)) continue;
             for (int i = 0; i < 3; i++)
-                for (int j = 0; j < NumOfCol; j++)
+                for (int j = 0; j < NUM_OF_COL; j++)
                     if (Grid[offset + i, j] == 0)
                         empty.Add((offset + i, j));
         }
@@ -39,21 +41,21 @@ public class NotaktoBoard : Board
     {
         WriteLine();
         Write("    ");
-        for (int i = 0; i < NumOfCol; i++)
+        for (int i = 0; i < NUM_OF_COL; i++)
         {
             Write($" C{i + 1} ");
         }
         WriteLine();
-        for (int i = 0; i < NumOfRow; i++)
+        for (int i = 0; i < NUM_OF_ROW; i++)
         {
             Write($"R{i + 1} ");
-            for (int j = 0; j < NumOfCol; j++)
+            for (int j = 0; j < NUM_OF_COL; j++)
             {
                 string cell = Grid[i, j] == 0 ? " . " : AddSpacesAround("X");
                 Write($"|{cell}");
             }
             WriteLine("|");
-            if ((i+1)%NumOfCol == 0)  WriteLine();
+            if ((i+1)%NUM_OF_COL == 0)  WriteLine();
         }
         WriteLine();
     }
@@ -70,7 +72,7 @@ public class NotaktoBoard : Board
         int offset = boardIndex * 3;
         if (BoardIsDead(offset)) return false;   // cannot play in a dead board
         if (!IsCellEmpty(row, col)) return false;
-        Grid[row, col] = piece;
+        Grid[row, col] = PIECE;
         return true;
     }
 
@@ -86,6 +88,7 @@ public class NotaktoBoard : Board
         return Grid;
     }
 
+    // check if the board is dead
     private bool BoardIsDead(int rowOffset)
     {
         // rows
@@ -112,7 +115,7 @@ public class NotaktoBoard : Board
         return false;
     }
 
-    // todo remove player param
+    // check if all three boards are dead
     public override bool CheckWin(Player player)
     {
         int deadCount = 0;
