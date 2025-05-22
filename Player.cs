@@ -193,7 +193,7 @@ public class ComputerPlayer : Player
         {
             // For non-numerical games (like Gomoku or Notakto)
             // try to find a winning move
-            (int, int)? losingMove = null; // for Notakto
+            List<(int, int)> losingMoves = new List<(int, int)>(); // for Notakto
             foreach (var (r, c) in emptyCells)
             {
                 if (game.Board.PlaceMove(r, c, this))
@@ -207,7 +207,7 @@ public class ComputerPlayer : Player
                         }
                         else
                         {
-                            losingMove = (r, c);
+                            losingMoves.Add((r, c));
                         }
                     }
                     game.Board.ResetNumber(r, c); // Undo the test move
@@ -215,9 +215,9 @@ public class ComputerPlayer : Player
             }
 
             // for Notakto, try to avoid losing move
-            if (losingMove.HasValue && emptyCells.Count > 1)
+            if (losingMoves.Count > 0 && emptyCells.Count > losingMoves.Count)
             {
-                emptyCells.Remove(losingMove.Value);
+                emptyCells = emptyCells.Except(losingMoves).ToList();
             }
 
             // If no winning move, make a random move
