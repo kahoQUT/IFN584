@@ -83,11 +83,6 @@ public class NotaktoBoard : Board
         return true;
     }
 
-    public int[,] GetGrid()
-    {
-        return Grid;
-    }
-
     // check if the board is dead
     private bool BoardIsDead(int rowOffset)
     {

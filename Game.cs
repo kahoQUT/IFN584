@@ -25,11 +25,11 @@ public abstract class Game
     //Template method outling the steps
     public void playGame()
     {
-        while (!endOfGame())
+        while (!EndOfGame())
         {
             DisplayBoards();
             MakePlay();
-            if(endOfGame()) break;
+            if (EndOfGame()) break;
             SwitchTurn();
             SaveState();
         }
@@ -38,7 +38,7 @@ public abstract class Game
     }
 
     public abstract void Initialize();
-    protected abstract bool endOfGame();
+    protected abstract bool EndOfGame();
     public abstract void DisplayBoards();
     protected abstract void MakePlay();
     protected abstract void EndGame();
@@ -101,11 +101,11 @@ public abstract class Game
             GameStateHistory.Push(RedoStack.Pop());
             GameStateHistory.Push(RedoStack.Pop());
             var currentState = GameStateHistory.Peek();
-            
+
             // Apply the redo state
             Board.Grid = (int[,])currentState.Grid2D.Clone();
             CurrentPlayerIndex = currentState.CurrentPlayerIndex;
-            
+
             WriteLine("Redo Successful");
         }
         else
@@ -128,7 +128,7 @@ public abstract class Game
 
         var state = new GameState
         {
-            GameType = this is NumTicTacToeGame ? 1 : 
+            GameType = this is NumTicTacToeGame ? 1 :
                         this is NotaktoGame ? 2 : 3,
             BoardSize = BoardSize,
             Grid = gridAsJagged,
@@ -163,10 +163,10 @@ public abstract class Game
             }
         }
         state.Grid2D = grid;
-        
+
         return state;
     }
-    
+
     protected void SwitchTurn()
     {
         CurrentPlayerIndex = (CurrentPlayerIndex + 1) % 2;

@@ -9,7 +9,7 @@ public class NumTicTacToeGame : Game
     {
         Board = new NumTicTacToeBoard(BoardSize);
     }
-    protected override bool endOfGame()
+    protected override bool EndOfGame()
     {
         //Checking is there winner or emptycell
         if (Board.CheckWin(Players[CurrentPlayerIndex]) || Board.GetEmptyCells().Count == 0) return true;
