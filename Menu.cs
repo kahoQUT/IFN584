@@ -51,11 +51,11 @@ public class Menu
                 boardSize = ChooseBoardSize();
                 break;
             case 2:
-            //default board size for notakto game
+                //default board size for notakto game
                 boardSize = 3;
                 break;
             case 3:
-            //default board size for gomoku game
+                //default board size for gomoku game
                 boardSize = 15;
                 break;
             default:
@@ -102,14 +102,14 @@ public class Menu
             switch (input)
             {
                 case "1":
-                //Creating Two Human Players
+                    //Creating Two Human Players
                     return new Player[]
                     {
                         new HumanPlayer("Player 1", isNumerical, true, boardSize, symbol1),
                         new HumanPlayer("Player 2", isNumerical, false, boardSize, symbol2)
                     };
                 case "2":
-                //Creating Human Player and Computer Player
+                    //Creating Human Player and Computer Player
                     return new Player[]
                     {
                         new HumanPlayer("Player", isNumerical, true, boardSize, symbol1),
@@ -149,7 +149,7 @@ public class Menu
         try
         {
             GameState state = Game.LoadGame(path);
-            
+
             char? symbol1 = state.IsNumGame ? null : 'X';
             char? symbol2 = state.IsNumGame ? null : 'O';
 
@@ -171,6 +171,33 @@ public class Menu
             // Restore the board state
             game.Board.Grid = state.Grid2D;
             game.CurrentPlayerIndex = state.CurrentPlayerIndex;
+
+            // Restore the game state history
+            if (state.GameStateList != null)
+            {
+                game.GameStateHistory = new Stack<GameState>();
+                // Need to reverse the list to maintain correct order in the stack
+                foreach (var savedState in state.GameStateList.AsEnumerable().Reverse())
+                {
+                    var grid2D = new int[savedState.Grid.Length, savedState.Grid[0].Length];
+                    for (int i = 0; i < savedState.Grid.Length; i++)
+                    {
+                        for (int j = 0; j < savedState.Grid[i].Length; j++)
+                        {
+                            grid2D[i, j] = savedState.Grid[i][j];
+                        }
+                    }
+                    game.GameStateHistory.Push(new GameState
+                    {
+                        Grid2D = grid2D,
+                        CurrentPlayerIndex = savedState.CurrentPlayerIndex
+                    });
+                }
+            }
+            else
+            {
+                game.GameStateHistory = new Stack<GameState>();
+            }
 
             // Start playing the loaded game
             game.playGame();

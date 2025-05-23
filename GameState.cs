@@ -16,4 +16,13 @@ public class GameState
     public List<int> Player2Numbers { get; set; }
     public int CurrentPlayerIndex { get; set; }
     public bool IsNumGame { get; set; }
+    
+    // Add these for saving history
+    public List<SerializableGameState> GameStateList { get; set; }
+}
+
+public class SerializableGameState
+{
+    public int[][] Grid { get; set; }
+    public int CurrentPlayerIndex { get; set; }
 }

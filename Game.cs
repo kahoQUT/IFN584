@@ -11,7 +11,7 @@ public abstract class Game
     protected int BoardSize;
     public int CurrentPlayerIndex;
     // for undo
-    protected Stack<GameState> GameStateHistory = new Stack<GameState>();
+    public Stack<GameState> GameStateHistory = new Stack<GameState>();
     // for redo
     protected Stack<GameState> RedoStack = new Stack<GameState>();
 
@@ -126,6 +126,24 @@ public abstract class Game
             }
         }
 
+        var history = new List<SerializableGameState>();
+        foreach (var gState in GameStateHistory)
+        {
+            var jagged = new int[gState.Grid2D.GetLength(0)][];
+            for (int i = 0; i < gState.Grid2D.GetLength(0); i++)
+            {
+                jagged[i] = new int[gState.Grid2D.GetLength(1)];
+                for (int j = 0; j < gState.Grid2D.GetLength(1); j++)
+                {
+                    jagged[i][j] = gState.Grid2D[i, j];
+                }
+            }
+            history.Add(new SerializableGameState {
+                Grid = jagged,
+                CurrentPlayerIndex = gState.CurrentPlayerIndex
+            });
+        }
+
         var state = new GameState
         {
             GameType = this is NumTicTacToeGame ? 1 :
@@ -139,7 +157,8 @@ public abstract class Game
             Player2Type = Players[1] is HumanPlayer ? "Human" : "Computer",
             Player2Numbers = new List<int>(Players[1].AvailableNumbers),
             CurrentPlayerIndex = CurrentPlayerIndex,
-            IsNumGame = Players[0].IsNumGame
+            IsNumGame = Players[0].IsNumGame,
+            GameStateList = history,
         };
 
         var options = new JsonSerializerOptions { WriteIndented = true };
@@ -163,6 +182,19 @@ public abstract class Game
             }
         }
         state.Grid2D = grid;
+
+        var history = new List<SerializableGameState>();
+        if (state.GameStateList != null)
+        {
+            foreach (var savedState in state.GameStateList)
+            {
+                history.Add(new SerializableGameState {
+                    Grid = savedState.Grid,
+                    CurrentPlayerIndex = savedState.CurrentPlayerIndex
+                });
+            }
+        }
+        state.GameStateList = history;
 
         return state;
     }
